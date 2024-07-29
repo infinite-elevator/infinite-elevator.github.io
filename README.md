@@ -10,7 +10,7 @@ Aplikacja stanowi zarazem demonstrację jednego z możliwych algorytmów pozwala
 
 ### Wprowadzenie
 
-W **miastowcu I** (czyt. $i$) - pierwszym z najnowszej generacji wieżowców-miast, liczącym sobie 65&nbsp;535 pięter oraz parter (piętro 0) znajduje się rząd szesnastu Bardzo Pojemnych:tm: wind przywoływalnych na każdym piętrze za pomocą wspólnego dla nich panelu.
+W **miastowcu I** (czyt. $i$) - pierwszym z najnowszej generacji wieżowców-miast, liczącym sobie 65&nbsp;535 pięter oraz parter (piętro 0) znajduje się rząd szesnastu Bardzo Pojemnych™ wind przywoływalnych na każdym piętrze za pomocą wspólnego dla nich panelu.
 
 Wspólny panel posiada dwa przyciski: pierwszy wyraża chęć jazdy w górę, drugi - w dół. Z oczywistymi wyjątkami:
 
@@ -37,18 +37,19 @@ Bo bez wspaniałego algorytmu to bym chyba wybrał schody. Szczerze mówiąc, na
   * Znajduje się ono, choć wydłuża drogę, bliżej piętra na początku listy niż na końcu, a istnieją na liście dwa piętra bardziej odległe od siebie niż pierwsze z tych dwóch pięter oraz piętro wybrane - piętro wybrane dopisywane jest między pierwsze takie znalezione dwa piętra,
   * Jeżeli powyższe warunki nie są spełnione - piętro jest dopisywane na koniec listy.
 * Gdy osoby **poza windą** zamówią ją na jakieś piętro, to winda, która uwzględniając zasady podane powyżej najszybciej dotrze z piętra, na którym się obecnie znajduje na piętro, na które została zamówiona, a z niego na ostatnie piętro (tj. 0 albo 65&nbsp;535) po stronie, która została wybrana, otrzymuje na swoją listę polecenie udania się na zamówione piętro, a po dotarciu odznacza odpowiedni przycisk na panelu.
-* Jeżeli jakieś windy są bezczynne - nie mają nic na liście, to ta z nich, która jest najbliżej piętra 0 kieruje się na to piętro, z pozostałych wind ta najbliżej piętra 4369 kieruje się na nie, później 8738, itd. aż do przemieszczenia wszystkich bezczynnych wind.
+* Jeżeli jakieś windy są bezczynne - nie mają nic na liście i są puste, to ta z nich, która jest najbliżej piętra 0 kieruje się na to piętro, z pozostałych wind ta najbliżej piętra 4369 kieruje się na nie, później 8738, itd. aż do przemieszczenia wszystkich bezczynnych wind.
 
 ### Możliwe usprawnienia
 
 * Odnotowano, że istnieje możliwość wystąpienia sytuacji, w której osoby w grupie zamawiającej windy w obu kierunkach wsiądą do niewłaściwej z nich, gdy obie przyjadą jednocześnie. Konstruktorom wydawało się jednak, że jest to zbyt rzadko występujący problem, aby poświęcać mu uwagę. *(Do dnia dzisiejszego odnotowano 11&nbsp;738 pozwów.)*
+* Liczby pięter oraz wind są zakodowane na stałe, a skoro wszystkie równania są oczywiste, to mogłyby być dynamiczne. Ale wtedy w istocie algorytm miałby pewne przypadki szczególne, a jako że przecież windy i tak są bardzo drogie, to żaden problem ręcznie poprawić kod, gdy parametry się zmienią!
 
 * Oczywistym uproszczeniem niezmiernie usprawniającym działanie wind byłaby możliwość podania piętra, na które chce się udać użytkownik, już na etapie przywołania windy.
   Jak się jednak okazało:
 
   * Instalacja hologramu indywidualnego na każdym piętrze, zamiast jeżdżącego wraz z windami, byłaby zaporowo droga - w istocie, cena tego kosmicznej precyzji systemu jest tak wysoka, że tylko z tej przyczyny w wieżowcu znajduje się 16 wind, a nie 128, jak pierwotnie planowano,
 
-  * Tradycyjny klawiszowy system wprowadzania obsługiwany przez najbliżej znajdującą się osobę, mimo wysokiej kooperacji użytkowników tego systemu, okazał się nieefektywny ze względu na wytwarzany w okolicach windy głośny hałas,
+  * Tradycyjny klawiszowy system wprowadzania obsługiwany przez najbliżej znajdującą się osobę, mimo wysokiej kooperacji użytkowników tego systemu, okazał się nieefektywny ze względu na wytwarzany w okolicach wind głośny hałas,
 
   * Z zamawiania windy za pomocą telefonu zrezygnowano ze względu na pewnych dwojga nienamierzalnych żartownisiów, którzy mimo wszystkich zabezpieczeń potrafili zdalnie zamawiać windę na wszystkie piętra. A jeżdżą pewnie schodami.
 
@@ -65,22 +66,48 @@ Na aplikację składają się dwa niezależne moduły:
   git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
   cd infinite-elevator.github.io/server
   docker buildx build -t infinite-elevator . || sudo docker buildx build -t infinite-elevator .
-  docker run -dp 127.0.0.1:37133:37133 --restart=unless-stopped --name infinite-elevator infinite-elevator || sudo docker run -dp 127.0.0.1:37133:37133 --restart=unless-stopped --name infinite-elevator infinite-elevator #jeżeli serwer ma wiele publicznych adresów IP, należy zmienić oba adresy 127.0.0.1 na właściwy
+  docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator #jeżeli serwer ma wiele publicznych adresów IP, należy zmienić oba adresy 127.0.0.1 na właściwy
   ```
 
   Powyższe komendy zostały przetestowane na systemach linuksowych, ale powinny działać też w systemie macOS, a nawet w wierszu poleceń systemu Windows.
 
-  Następnie należy zmodyfikować plik index.html, zamieniając `141.147.52.46` na adres IP nowo postawionego serwera.
+  **Następnie należy zmodyfikować plik index.html, zamieniając `141.147.52.46` na adres IP nowo postawionego serwera.**
+
+  W celu podłączenia się do panelu kontrolnego serwera, można wykonać komendę:
+
+  ```sh
+  docker attach infinite-elevator || sudo docker attach infinite-elevator
+  ```
+
+  (Może być trzeba wcisnąć Enter, aby odświeżyć panel; aby się rozłączyć, wciśnij Ctrl+P+Q.)
+
+  W celu odczytania logów serwera, można wykonać komendę:
+  
+  ```sh
+  docker logs infinite-elevator || sudo docker logs infinite-elevator
+  ```
 
   W celu zatrzymania serwera, można wykonać komendę:
-
+  
   ```sh
   docker stop infinite-elevator || sudo docker stop infinite-elevator
   ```
 
+  Aby wystartować go znowu, można wykonać komendę:
+  
+  ```sh
+  docker start infinite-elevator || sudo docker start infinite-elevator
+  ```
+  
+  W celu skasowania serwera, można wykonać komendę:
+  
+  ```sh
+  docker rm infinite-elevator || sudo docker rm infinite-elevator
+  ```
+
 ### Licencja
 
-MIT. Poza zawartościami katalogu `ext` - są one rzadzone swoimi własnymi licencjami.
+MIT. Poza zawartościami katalogu `ext` - są one rządzone swoimi własnymi licencjami.
 
 ### Dotacje
 
@@ -94,13 +121,13 @@ Dzięki! :)
 
 **[(Almost) Infinite Elevator](https://infinite-elevator.github.io/)** is a multiplayer toy web application that simulates the operation of 16 elevators in a skyscraper 65,535 floors high (plus the ground floor).
 
-The application simultaneously serves as a demonstration of one of the algorithms that allow for the (somewhat) efficient movement of elevators in a building.
+The application simultaneously serves as a demonstration of one of the possible algorithms that allow for the (somewhat) efficient movement of elevators in a building.
 
 **[And it's available online - simply click here!](https://infinite-elevator.github.io/)**
 
 ### Introduction
 
-In **the cityscraper I** (pronounced $e$) - the first in the latest generation of skyscraper cities, featuring 65,535 floors plus a ground floor (floor 0), there is a row of sixteen Very Capacious:tm: elevators that may be called onto each floor using a shared panel.
+In **the cityscraper I** (pronounced $e$) - the first in the latest generation of skyscraper cities, featuring 65,535 floors plus a ground floor (floor 0), there is a row of sixteen Very Capacious™ elevators that may be called onto each floor using a shared panel.
 
 The shared panel has two buttons: the first one expresses the desire to go up, the second - down. With obvious exceptions:
 
@@ -117,7 +144,7 @@ Additionally, the skyscraper has regular escalators (operable by scrolling), whi
 
 Because without a great algorithm I would probably have chosen the stairs. Honestly, even **with the algorithm** residents often complain! But all we have to do is remind them how public transport was... Anyway:
 
-* Individually for each elevator, the memory contains an ordered list of floors to which it will go, with the first position on the list being the one the elevator is currently heading to. Floors on the list that were selected by people in the elevator - using the hologram - are also linked to the people.
+* Individually for each elevator, the memory contains an ordered list/array of floors to which it will go, with the first position on the list being the one the elevator is currently heading to. Floors on the list that were selected by people in the elevator - using the hologram - are also linked to the people.
 * When a person **in the elevator** selects the floor to which the elevator should go, and:
   * This person has already selected a floor - the previously selected floor is deleted and the other conditions are checked,
 
@@ -132,22 +159,22 @@ Because without a great algorithm I would probably have chosen the stairs. Hones
   * The floor is located, although this extends the route, closer to the floor at the beginning of the list than at the end, and there exist two floors on the list that are further apart than the first of these two floors and the selected floor - the selected floor is added between the first two such floors found,
 
   * If the above conditions are not met - the floor is added to the end of the list.
-
 * When people **outside the elevator** call it onto a floor, then the elevator that, taking into account the rules above, will take the least time from the floor it is currently at to the floor it was called to, and from there to the last floor (i.e. 0 or 65,535) towards the side that was selected, receives a command on its list to go to the ordered floor, and after reaching it, unchecks the appropriate button on the panel.
-
-* If any elevators are idle, i.e. they have nothing on the list, then the one that is closest to floor 0 goes to that floor, then of the remaining elevators, the one closest to floor 4369 goes to it, then 8738, etc. until all idle elevators are moved.
+* If any elevators are idle, i.e. they have nothing on the list, and empty, then the one that is closest to floor 0 goes to that floor, then of the remaining elevators, the one closest to floor 4369 goes to it, then 8738, etc. until all idle elevators are moved.
 
 ### Possible improvements
 
 * It has been noted that there is a chance of a situation happening wherein people, forming a group that calls elevators in both directions, will board the wrong one when both elevators arrive at the same time. However, the designers thought that this was too rare a problem to pay attention to. *(To date, 11,738 lawsuits have been recorded.)*
 
-* An obvious simplification that would greatly improve the operation of the elevators would be the possibility to specify the floor that to which the user wants to reach, already at the time of calling the elevator.
+* The numbers of floors and elevators are hardcoded, while, given that all the equations are obvious, they could perhaps be made dynamic. But then there would actually be some edge cases in the algorithm, and as elevators are very expensive anyways, it's no problem to manually correct the code when the parameters change!
+
+* An obvious simplification that would greatly improve the operation of the elevators would be the possibility to specify the floor that the user wants to reach, already at the time of calling the elevator.
   However, as it turns out:
-  * Installing an individual hologram on each floor, instead of one that travels with the elevators, would be prohibitively expensive - in fact, the price of this space-grade system is so high that for this reason alone there are 16 elevators in the skyscraper, not 128, as originally planned,
+  * Installing an individual hologram on each floor, instead of one that travels with the elevators, would be prohibitively expensive - in fact, the price of this system of space-grade precision is so high that for this reason alone there are 16 elevators in the skyscraper, not 128, as originally planned,
 
-  * The traditional keypad entry system operated by the person closest to the elevator, despite high levels of collaboration by the users, turned out to be ineffective due to the loud noise generated in the vicinity of the elevator,
+  * A traditional keypad entry system operated by the nearest person, despite high levels of collaboration by the users, turned out to be ineffective due to the loud noise generated in the vicinity of the elevators,
 
-  * Ordering an elevator by phone was given up due to a couple of untraceable pranksters who, despite all the security measures, were able to remotely order an elevator to all the floors. And they probably take the stairs.
+  * Ordering an elevator by phone was abandoned due to a couple of untraceable pranksters who, despite all the security measures, were able to remotely order an elevator to all the floors. And they probably take the stairs.
 
 
 That's why everything stays the way it is. And the system is easily applied to ordinary, 21st-century elevators. If it weren't for the identification of people inside - but a close enough approximation is simply to allow floors to be unchecked...
@@ -164,17 +191,43 @@ The application consists of two independent modules:
   git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
   cd infinite-elevator.github.io/server
   docker buildx build -t infinite-elevator . || sudo docker buildx build -t infinite-elevator .
-  docker run -dp 127.0.0.1:37133:37133 --restart=unless-stopped --name infinite-elevator infinite-elevator || sudo docker run -dp 127.0.0.1:37133:37133 --restart=unless-stopped --name infinite-elevator infinite-elevator #jeżeli serwer ma wiele publicznych adresów IP, należy zmienić oba adresy 127.0.0.1 na właściwy
+  docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator #if the server has many public IP addresses, both 127.0.0.1 here should be changed to the right ones
   ```
 
   The above commands were tested on Linux systems, but should work on macOS too, and even on the Windows command line.
 
-  Then, you need to modify the index.html file, replacing `141.147.52.46` with the IP address of the newly setup server.
+  **Then, you need to modify the index.html file, replacing `141.147.52.46` with the IP address of the newly setup server.**
 
-  To stop the server, you can run the command:
+  To attach to the server control panel, you may run the command:
+
+  ```sh
+  docker attach infinite-elevator || sudo docker attach infinite-elevator
+  ```
+
+  (You may have to press Enter to refresh the panel; to detach, press Ctrl+P+Q.)
+
+  To read the server logs, you may run the command:
+
+  ```sh
+  docker logs infinite-elevator || sudo docker logs infinite-elevator
+  ```
+
+  To stop the server, you may run the command:
 
   ```sh
   docker stop infinite-elevator || sudo docker stop infinite-elevator
+  ```
+
+  To start it back again, you may run the command:
+
+  ```sh
+  docker start infinite-elevator || sudo docker start infinite-elevator
+  ```
+  
+  To remove the server container, you may run the command:
+  
+  ```sh
+  docker rm infinite-elevator || sudo docker rm infinite-elevator
   ```
 
 ### License
