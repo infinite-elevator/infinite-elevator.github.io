@@ -66,33 +66,35 @@ Na aplikację składają się dwa niezależne moduły:
   git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
   cd infinite-elevator.github.io/server
   docker buildx build -t infinite-elevator . || sudo docker buildx build -t infinite-elevator .
-  docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator #jeżeli serwer ma wiele publicznych adresów IP, należy zmienić oba adresy 127.0.0.1 na właściwy
+  docker run -tidp 37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator
   ```
+
+  Jeżeli chcemy uruchomić serwer na konkretnym adresie IP, np. gdyż nasze urządzenie ma wiele publicznych adresów IP, możemy zmienić `37133:37133` na `adres_ip:37133:37133`, w rezultacie uzyskując np. `141.147.52.46:37133:37133`.
 
   Powyższe komendy zostały przetestowane na systemach linuksowych, ale powinny działać też w systemie macOS, a nawet w wierszu poleceń systemu Windows.
 
   **Następnie należy zmodyfikować plik index.html, zamieniając `141.147.52.46` na adres IP nowo postawionego serwera.**
 
   W celu podłączenia się do panelu kontrolnego serwera, można wykonać komendę:
-
+  
   ```sh
   docker attach infinite-elevator || sudo docker attach infinite-elevator
   ```
 
   (Może być trzeba wcisnąć Enter, aby odświeżyć panel; aby się rozłączyć, wciśnij Ctrl+P+Q.)
-
-  W celu odczytania logów serwera, można wykonać komendę:
   
+  W celu odczytania logów serwera, można wykonać komendę:
+
   ```sh
   docker logs infinite-elevator || sudo docker logs infinite-elevator
   ```
-
-  W celu zatrzymania serwera, można wykonać komendę:
   
+  W celu zatrzymania serwera, można wykonać komendę:
+
   ```sh
   docker stop infinite-elevator || sudo docker stop infinite-elevator
   ```
-
+  
   Aby wystartować go znowu, można wykonać komendę:
   
   ```sh
@@ -191,15 +193,17 @@ The application consists of two independent modules:
   git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
   cd infinite-elevator.github.io/server
   docker buildx build -t infinite-elevator . || sudo docker buildx build -t infinite-elevator .
-  docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 127.0.0.1:37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator #if the server has many public IP addresses, both 127.0.0.1 here should be changed to the right ones
+  docker run -tidp 37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator
   ```
+
+  If you want to run the server on a specific IP address, e.g. because your device has multiple public IP addresses, you may change `37133:37133` to `adres_ip:37133:37133`, resulting in e.g. `141.147.52.46:37133:37133`.
 
   The above commands were tested on Linux systems, but should work on macOS too, and even on the Windows command line.
 
   **Then, you need to modify the index.html file, replacing `141.147.52.46` with the IP address of the newly setup server.**
 
   To attach to the server control panel, you may run the command:
-
+  
   ```sh
   docker attach infinite-elevator || sudo docker attach infinite-elevator
   ```
@@ -207,19 +211,19 @@ The application consists of two independent modules:
   (You may have to press Enter to refresh the panel; to detach, press Ctrl+P+Q.)
 
   To read the server logs, you may run the command:
-
+  
   ```sh
   docker logs infinite-elevator || sudo docker logs infinite-elevator
   ```
 
   To stop the server, you may run the command:
-
+  
   ```sh
   docker stop infinite-elevator || sudo docker stop infinite-elevator
   ```
 
   To start it back again, you may run the command:
-
+  
   ```sh
   docker start infinite-elevator || sudo docker start infinite-elevator
   ```
