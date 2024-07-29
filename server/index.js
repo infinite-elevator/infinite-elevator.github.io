@@ -229,6 +229,14 @@ Elevator.prototype.step = function()
 		
 		if(this.currFloor == this.floorsToGo[0][0])
 		{
+			if(this.floorsToGo[0][1] == "up")
+			{
+				
+			}
+			else if(this.floorsToGo[0][1] == "dn")
+			{
+				
+			}
 			this.floorsToGo.shift();
 			this.open();
 		}
@@ -265,14 +273,18 @@ ElevatorSystem.prototype.call = function(floor, up)
 	for(let i = 0; i < this.elevators.length; i++)
 	{
 		let elevator = this.elevators[i];
+		if(elevator.floorsToGo.findIndex((e) => (e[0] == floor
+		&& e[1] == up ? "dn" : "up")) != -1)
+		{
+			continue;
+		}
 		
 		// Temporarily modify in place the floors to go to
 		let floorsToGoCopy = elevator.floorsToGo.slice();
 		
-		elevator.addFloorToGo(floor, "");
-		
-		let edge = elevator.addFloorToGo(up ? 65535 : 0, "");
-		let steps = elevator.stepsTillFloorToGo(edge);
+		let edge = elevator.addFloorToGo(floor, "");
+		elevator.floorsToGo.splice(edge+1, 0, [up ? 65535 : 0, ""]);
+		let steps = elevator.stepsTillFloorToGo(edge+1);
 		
 		if(steps < minSteps)
 		{
@@ -345,11 +357,11 @@ const system = new ElevatorSystem();
 
 io.on("connection", function(socket)
 {
-	io.emit("msg", "lolwhat");
+	/*io.emit("msg", "hello");
 	socket.on("msg", function(msg)
 	{
 		console.log(msg);
-	});
+	});*/
 });
 
 let stepMode = 0;
@@ -361,7 +373,7 @@ let stepper = setInterval(function()
 	}
 }, 1000);
 
-// Now this is horrendous, I know - but didn't take a long time to bootstrap!
+// Now, this is horrendous, I know - but didn't take a long time to bootstrap!
 function tui()
 {
 	console.log("\n(Almost) Infinite Elevator Server Control Panel\n");
@@ -462,6 +474,11 @@ function tui()
 					{
 						let e = system.call(floor, floor == 0);
 						console.log("Sent elevator " + (e+1) + "!");
+						tui();
+					}
+					else
+					{
+						console.log("You have entered a wrong floor.");
 						tui();
 					}
 				}

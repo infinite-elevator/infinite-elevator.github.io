@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Infinite Elevator</title>
+		<link rel="icon" type="image/png" href="./favicon.png">
+		<style>
+			table {
+				width: 100%;
+			}
+			td {
+				text-align: center;
+				vertical-align: top;
+				width: 6.25%;
+				height: 10em;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 id="floor"></h1>
+		<button onclick="">Call an elevator going upwards</button>
+		<table border="1" cellspacing="0">
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</table>
+		<button onclick="">Call an elevator going downwards</button>
+		<script src="ext/socket.io/socket.io.min.js"></script>
+		<script>
+			// Talk to the server
+			var socket = io("http://127.0.0.1:37133");
+			//var socket = io("http://141.147.52.46:37133");
+			var floor;
+			var inElevator = -1;
+			function setFloor(floor)
+			{
+				floor = 0;
+				document.getElementById("floor").innerHTML = "Floor " + floor;
+			}
+			
+			/*socket.on("msg", function(msg)
+			{
+				console.log(msg);
+			});*/
+			
+			window.addEventListener("load", function(e)
+			{
+				setFloor(0);
+			});
+			function scroll()
+			{
+				
+			}
+			document.addEventListener("scroll", scroll);
+		</script>
+	</body>
+</html>

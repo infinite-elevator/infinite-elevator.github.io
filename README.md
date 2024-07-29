@@ -2,26 +2,24 @@
 
 ## Polish
 
-**[(Almost) Infinite Elevator](https://infinite-elevator.github.io/)** jest aplikacją-zabawką internetową dla wielu graczy symulującą pracę 16 wind w wieżowcu wysokim na 65&nbsp;535 pięter (nie licząc parteru).
+**[(Almost) Infinite Elevator](https://infinite-elevator.github.io/)** jest będącą w trakcie przygotowania aplikacją-zabawką internetową dla wielu graczy symulującą pracę 16 wind w wieżowcu wysokim na 65&nbsp;535 pięter (nie licząc parteru).
 
 Aplikacja stanowi zarazem demonstrację jednego z możliwych algorytmów pozwalających na (w miarę) wydajne przemieszczanie się wind w budynku.
 
-**[I jest dostępna online - po prostu kliknij tutaj!](https://infinite-elevator.github.io/)**
+<!--**[I jest dostępna online - po prostu kliknij tutaj!](https://infinite-elevator.github.io/)**-->
 
 ### Wprowadzenie
 
 W **miastowcu I** (czyt. $i$) - pierwszym z najnowszej generacji wieżowców-miast, liczącym sobie 65&nbsp;535 pięter oraz parter (piętro 0) znajduje się rząd szesnastu Bardzo Pojemnych™ wind przywoływalnych na każdym piętrze za pomocą wspólnego dla nich panelu.
 
-Wspólny panel posiada dwa przyciski: pierwszy wyraża chęć jazdy w górę, drugi - w dół. Z oczywistymi wyjątkami:
+Wspólny panel posiada dwa pojemnościowo-dotykowe, wykrywające bezbłędnie palce przyciski: pierwszy, zajmujący cały sufit, wyraża chęć jazdy w górę, drugi, tak szeroki jak podłoga - w dół. Z oczywistymi wyjątkami:
 
 * Panel na parterze (piętrze 0) - posiada wyłącznie przycisk wyrażający chęć jazdy w górę,
 * Panel na piętrze 65&nbsp;535 - tylko przycisk wyrażający chęć jazdy w dół.
 
 Każda winda posiada pole do wprowadzania piętra, na które chce się udać jej użytkownik. Pole jest wykonane w technologii hologramu indywidualnego - wyświetla się z osobna dla każdej osoby, która wejdzie do windy. Osoba ta wpisuje w pole numer piętra, na które chce się udać, i zatwierdza klawiszem Enter. Na każdym przystanku ma też możliwość wyjścia z windy - wówczas winda automatycznie usuwa dokonany przez nią wybór piętra.
 
-Windy wykorzystują wspólny dla nich, zbudowany redundantnie potężny silnik krokowy (jeden krok - 64 piętra), do którego każda posiada podłączoną własną wysoce złożoną przekładnię. Dzięki takiemu rozwiązaniu windy poruszają się z prędkością 64 pięter na sekundę, osiągalną w pomijalnie krótkim czasie. Chociaż jednak winda może przerwać ruch w każdej chwili, a więc zatrzymać się na dowolnym piętrze, to opisana budowa oznacza, że rozpocząć ruch może ona tylko raz na sekundę (krok), w momencie zsynchronizowania silnika i przekładni.
-
-Dodatkowo wieżowiec posiada zwykłe schody ruchome (obsługiwane poprzez przewijanie), pozwalają się one poruszać z prędkością tylko dwóch pięter na sekundę, ale bez dodatkowych opóźnień.
+Windy wykorzystują wspólny dla nich, zbudowany redundantnie potężny silnik krokowy (jeden krok - 64 piętra), do którego każda posiada podłączoną własną wysoce złożoną przekładnię. Dzięki takiemu rozwiązaniu windy poruszają się z prędkością 64 pięter na sekundę, osiągalną w pomijalnie krótkim czasie. Chociaż jednak winda może przerwać ruch w każdej chwili, a więc zatrzymać się na dowolnym piętrze, to opisana budowa oznacza, że rozpocząć ruch może ona tylko raz na sekundę (krok), w momencie zsynchronizowania silnika i przekładni.<!-- Dodatkowo wieżowiec posiada zwykłe schody ruchome (obsługiwane poprzez przewijanie), pozwalają się one poruszać z prędkością tylko dwóch pięter na sekundę, ale bez dodatkowych opóźnień.-->
 
 ### Wspaniały algorytm przemieszczania wind 
 
@@ -57,11 +55,21 @@ Bo bez wspaniałego algorytmu to bym chyba wybrał schody. Szczerze mówiąc, na
 
 ### Opis wykonania i instalacji
 
-Na aplikację składają się dwa niezależne moduły:
+Na aplikację składają się:
 
-* Strona internetowa wykonana w HTML/CSS/JavaScript - implementuje interaktywny interfejs użytkownika po stronie klienta, uruchomienie jej wymaga wyłącznie pobrania repozytorium i otwarcia pliku index.html w przeglądarce internetowej,
+* **(Niestety nadal głębokie WIP)** Strona internetowa wykonana w HTML/CSS/JavaScript - implementuje interaktywny interfejs użytkownika po stronie klienta, uruchomienie jej wymaga wyłącznie pobrania repozytorium i otwarcia pliku index.html w przeglądarce internetowej.
 
-* Skonteneryzowany w Dockerze serwer Node.JS/Socket.IO - umożliwia synchronizację między użytkownikami aplikacji, przechowując centralnie stan wind. Może być hostowany poprzez wywołanie następujących komend na systemie z prawidłowo skonfigurowanym oprogramowaniem Git oraz Docker wraz z buildx i niezablokowanym portem 37133, w katalogu, do którego mamy dostęp:
+* Serwer Node.JS/Socket.IO - centralnie kontroluje stan wind. Możemy go włączyć poprzez wywołanie następujących komend w systemie z prawidłowo skonfigurowanym oprogramowaniem Git oraz Node.JS i NPM, w katalogu, do którego mamy dostęp:
+  
+  ```sh
+  git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
+  cd infinite-elevator.github.io/server
+  npm install
+  node index.js
+  ```
+  
+  W celu permanentnego hostowania, albo jeżeli powyższe komendy nie działają, można wykorzystać Docker. Możemy w nim uruchomić serwer poprzez wywołanie następujących komend w systemie z prawidłowo skonfigurowanym oprogramowaniem Git oraz Docker wraz z buildx i niezablokowanym portem 37133, w katalogu, do którego mamy dostęp:
+  
   ```sh
   git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
   cd infinite-elevator.github.io/server
@@ -72,25 +80,40 @@ Na aplikację składają się dwa niezależne moduły:
   Jeżeli chcemy uruchomić serwer na konkretnym adresie IP, np. gdyż nasze urządzenie ma wiele publicznych adresów IP, możemy zmienić `37133:37133` na `adres_ip:37133:37133`, w rezultacie uzyskując np. `141.147.52.46:37133:37133`.
 
   Powyższe komendy zostały przetestowane na systemach linuksowych, ale powinny działać też w systemie macOS, a nawet w wierszu poleceń systemu Windows.
-
-  **Następnie należy zmodyfikować plik index.html, zamieniając `141.147.52.46` na adres IP nowo postawionego serwera.**
+  
+  Następnie należy zmodyfikować plik index.html, zamieniając `141.147.52.46` na adres IP nowo postawionego serwera.
 
   W celu podłączenia się do panelu kontrolnego serwera, można wykonać komendę:
-  
+
   ```sh
   docker attach infinite-elevator || sudo docker attach infinite-elevator
   ```
 
+  Powinieneś wówczas ujrzeć podobny widok:
+
+  ```
+  (Almost) Infinite Elevator Server Control Panel
+  
+  1. Check elevator and player status
+  2. Call elevator
+  3. Teleport elevator
+  4. Toggle stepping: <every second> / manually
+  5. Step now
+  6. Close server
+  
+  Choose an option by entering a number and pressing Enter: 
+  ```
+  
   (Może być trzeba wcisnąć Enter, aby odświeżyć panel; aby się rozłączyć, wciśnij Ctrl+P+Q.)
   
   W celu odczytania logów serwera, można wykonać komendę:
-
+  
   ```sh
   docker logs infinite-elevator || sudo docker logs infinite-elevator
   ```
   
   W celu zatrzymania serwera, można wykonać komendę:
-
+  
   ```sh
   docker stop infinite-elevator || sudo docker stop infinite-elevator
   ```
@@ -111,36 +134,26 @@ Na aplikację składają się dwa niezależne moduły:
 
 MIT. Poza zawartościami katalogu `ext` - są one rządzone swoimi własnymi licencjami.
 
-### Dotacje
-
-Ale to naprawdę aż tak dobre?
-
-[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sendmoney%40go2%2epl&lc=US&item_name=Donate%20to%20the%20GitHub%20user%20newbthenewbd&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
-
-Dzięki! :)
-
 ## English
 
-**[(Almost) Infinite Elevator](https://infinite-elevator.github.io/)** is a multiplayer toy web application that simulates the operation of 16 elevators in a skyscraper 65,535 floors high (plus the ground floor).
+**[(Almost) Infinite Elevator](https://infinite-elevator.github.io/)** is a work-in-progress multiplayer toy web application that simulates the operation of 16 elevators in a skyscraper 65,535 floors high (plus the ground floor).
 
 The application simultaneously serves as a demonstration of one of the possible algorithms that allow for the (somewhat) efficient movement of elevators in a building.
 
-**[And it's available online - simply click here!](https://infinite-elevator.github.io/)**
+<!--**[And it's available online - simply click here!](https://infinite-elevator.github.io/)**-->
 
 ### Introduction
 
 In **the cityscraper I** (pronounced $e$) - the first in the latest generation of skyscraper cities, featuring 65,535 floors plus a ground floor (floor 0), there is a row of sixteen Very Capacious™ elevators that may be called onto each floor using a shared panel.
 
-The shared panel has two buttons: the first one expresses the desire to go up, the second - down. With obvious exceptions:
+The shared panel has two impeccably finger-sensing touch-capacitive buttons: the first one, filling the whole ceiling, expresses the desire to go up, the second, as wide as the floor - down. With obvious exceptions:
 
 * The panel on the ground floor (floor 0) - has only a button to express the desire to go up,
 * The panel on the floor 65,535 - only a button to express the desire to go down.
 
 Each elevator has a number input field for entering the floor to which its user wants to go. The field is made with the use of the individual hologram technology - it is displayed individually for each person who enters the elevator. The person enters into the field the number of the floor to which they want to go, and confirms with the Enter key. At each stop, they also have an option of leaving the elevator - then the elevator automatically cancels their floor selection.
 
-The elevators use a common, redundantly built mighty stepper motor (one step - 64 floors), to which each elevator has a highly complex gearshift of its own connected. Thanks to this solution, the elevators move at a speed of 64 floors per second, achievable in a negligible time. However, although an elevator may stop moving at any time, i.e. stop at any floor, the described construction means that it can start moving only once per second (step), when the engine and the gearshift are synchronized.
-
-Additionally, the skyscraper has regular escalators (operable by scrolling), which allow for movement at a speed of only two floors per second, but without additional delays.
+The elevators use a common, redundantly built mighty stepper motor (one step - 64 floors), to which each elevator has a highly complex gearshift of its own connected. Thanks to this solution, the elevators move at a speed of 64 floors per second, achievable in a negligible time. However, although an elevator may stop moving at any time, i.e. stop at any floor, the described construction means that it can start moving only once per second (step), when the engine and the gearshift are synchronized.<!-- Additionally, the skyscraper has regular escalators (operable by scrolling), which allow for movement at a speed of only two floors per second, but without additional delays.-->
 
 ### The great elevator movement algorithm
 
@@ -183,11 +196,20 @@ That's why everything stays the way it is. And the system is easily applied to o
 
 ### How it's made and how to install it
 
-The application consists of two independent modules:
+The application consists of:
 
-* A website made in HTML/CSS/JavaScript - implements an interactive user interface on the client side, to start it you only have to download the repository and open the file index.html in a web browser,
+* **(Sadly still deeply WIP)** A website made in HTML/CSS/JavaScript - implements an interactive user interface on the client side, to start it you only have to download the repository and open the file index.html in a web browser.
 
-* A Node.JS/Socket.IO server containerized in Docker - enables synchronization between the users of the application, storing the status of elevators centrally. You may host it by calling the following commands on a system with correctly configured Git and Docker with buildx, and an unlocked port 37133, in a directory that you have write access to:
+* A Node.JS/Socket.IO server - centrally controls the state of the elevators. You may run it with the following commands on a system with correctly configured Git, Node.JS and NPM, in a directory that you have write access to:
+
+  ```sh
+  git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
+  cd infinite-elevator.github.io/server
+  npm install
+  node index.js
+  ```
+
+  If you want to deploy it permanently, or if the above commands are not working, Docker may be used. You may host the server by calling the following commands on a system with correctly configured Git and Docker with buildx, and an unlocked port 37133, in a directory that you have write access to:
 
   ```sh
   git clone --depth 1 https://github.com/infinite-elevator/infinite-elevator.github.io.git
@@ -195,33 +217,48 @@ The application consists of two independent modules:
   docker buildx build -t infinite-elevator . || sudo docker buildx build -t infinite-elevator .
   docker run -tidp 37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator || sudo docker run -tidp 37133:37133 --restart=on-failure --name infinite-elevator infinite-elevator
   ```
-
+  
   If you want to run the server on a specific IP address, e.g. because your device has multiple public IP addresses, you may change `37133:37133` to `adres_ip:37133:37133`, resulting in e.g. `141.147.52.46:37133:37133`.
-
+  
   The above commands were tested on Linux systems, but should work on macOS too, and even on the Windows command line.
-
-  **Then, you need to modify the index.html file, replacing `141.147.52.46` with the IP address of the newly setup server.**
-
+  
+  Then, you need to modify the index.html file, replacing `141.147.52.46` with the IP address of the newly setup server.
+  
   To attach to the server control panel, you may run the command:
   
   ```sh
   docker attach infinite-elevator || sudo docker attach infinite-elevator
   ```
-
+  
+  You should then see something like this:
+  
+  ```
+  (Almost) Infinite Elevator Server Control Panel
+  
+  1. Check elevator and player status
+  2. Call elevator
+  3. Teleport elevator
+  4. Toggle stepping: <every second> / manually
+  5. Step now
+  6. Close server
+  
+  Choose an option by entering a number and pressing Enter: 
+  ```
+  
   (You may have to press Enter to refresh the panel; to detach, press Ctrl+P+Q.)
-
+  
   To read the server logs, you may run the command:
   
   ```sh
   docker logs infinite-elevator || sudo docker logs infinite-elevator
   ```
-
+  
   To stop the server, you may run the command:
   
   ```sh
   docker stop infinite-elevator || sudo docker stop infinite-elevator
   ```
-
+  
   To start it back again, you may run the command:
   
   ```sh
@@ -237,11 +274,3 @@ The application consists of two independent modules:
 ### License
 
 MIT. Except the contents of the `ext` directory - they are governed by their respective licenses.
-
-### Donations
-
-But is it really that good?
-
-[![Donate with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sendmoney%40go2%2epl&lc=US&item_name=Donate%20to%20the%20GitHub%20user%20newbthenewbd&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
-
-Thanks! :)
