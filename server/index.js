@@ -274,7 +274,7 @@ ElevatorSystem.prototype.call = function(floor, up)
 	{
 		let elevator = this.elevators[i];
 		if(elevator.floorsToGo.findIndex((e) => (e[0] == floor
-		&& e[1] == up ? "dn" : "up")) != -1)
+		&& (e[1] == up ? "dn" : "up"))) != -1)
 		{
 			continue;
 		}
